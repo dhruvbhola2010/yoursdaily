@@ -1,6 +1,8 @@
-import { Check, Lightbulb, BookOpen, Crown } from "lucide-react";
+import { Check, Lightbulb, BookOpen, Crown, Gift } from "lucide-react";
 import { Card, CardContent, CardHeader } from "./ui/card";
 import { Button } from "./ui/button";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
 const pricingPlans = [
   {
@@ -11,6 +13,7 @@ const pricingPlans = [
     icon: null,
     popular: false,
     buttonVariant: "outline" as const,
+    buttonText: "Get Started",
   },
   {
     name: "Fun Facts",
@@ -26,6 +29,7 @@ const pricingPlans = [
     icon: Lightbulb,
     popular: false,
     buttonVariant: "gold" as const,
+    buttonText: "Start Free Trial",
   },
   {
     name: "Word Lover",
@@ -41,6 +45,7 @@ const pricingPlans = [
     icon: BookOpen,
     popular: false,
     buttonVariant: "gold" as const,
+    buttonText: "Start Free Trial",
   },
   {
     name: "Complete",
@@ -57,14 +62,31 @@ const pricingPlans = [
     icon: Crown,
     popular: true,
     buttonVariant: "navy" as const,
+    buttonText: "Start Free Trial",
   },
 ];
 
 export const PricingSection = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const handleSubscribe = () => {
+    if (!user) {
+      navigate("/auth");
+    }
+    // TODO: Implement Stripe checkout
+  };
+
   return (
     <section className="py-20 px-4">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12 animate-fade-in">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/20 mb-6">
+            <Gift className="w-4 h-4 text-accent" />
+            <span className="text-sm font-semibold text-accent">
+              7-Day Free Trial • No Credit Card Required
+            </span>
+          </div>
           <h2 className="font-serif text-4xl sm:text-5xl font-bold text-foreground mb-4">
             Choose Your Journey
           </h2>
@@ -115,8 +137,12 @@ export const PricingSection = () => {
                     </li>
                   ))}
                 </ul>
-                <Button variant={plan.buttonVariant} className="w-full">
-                  {plan.price === "$0" ? "Get Started" : "Subscribe"}
+                <Button
+                  variant={plan.buttonVariant}
+                  className="w-full"
+                  onClick={handleSubscribe}
+                >
+                  {plan.buttonText}
                 </Button>
               </CardContent>
             </Card>
