@@ -1,37 +1,45 @@
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
-
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap font-bold tracking-wide ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/30 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 active:scale-[0.92]",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm hover:shadow-md",
-        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
-        gold: "bg-accent text-accent-foreground font-semibold shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]",
-        goldOutline: "border-2 border-accent text-accent hover:bg-accent hover:text-accent-foreground font-semibold",
-        navy: "bg-primary text-primary-foreground font-semibold shadow-md hover:bg-primary/80 hover:shadow-lg",
+        default:
+          "rounded-[20px] bg-gradient-to-br from-[#A78BFA] to-[#7C3AED] text-white shadow-clay-button hover:-translate-y-1 active:shadow-clay-pressed",
+        destructive:
+          "rounded-[20px] bg-destructive text-destructive-foreground shadow-clay-button hover:-translate-y-1",
+        outline:
+          "rounded-[20px] border-2 border-primary/20 bg-transparent text-primary hover:border-primary hover:bg-primary/5",
+        secondary:
+          "rounded-[20px] bg-white text-foreground shadow-clay-button hover:-translate-y-1",
+        ghost:
+          "rounded-[20px] text-foreground hover:bg-primary/10 hover:text-primary",
+        link:
+          "text-primary underline-offset-4 hover:underline",
+        clay:
+          "rounded-[20px] bg-gradient-to-br from-[#A78BFA] to-[#7C3AED] text-white shadow-clay-button hover:-translate-y-1 hover:shadow-[16px_16px_32px_rgba(139,92,246,0.4),-10px_-10px_20px_rgba(255,255,255,0.5)] active:shadow-clay-pressed",
+        clayPink:
+          "rounded-[20px] bg-gradient-to-br from-[#F472B6] to-[#DB2777] text-white shadow-clay-button hover:-translate-y-1 active:shadow-clay-pressed",
+        clayOutline:
+          "rounded-[20px] border-2 border-primary/20 bg-white/60 backdrop-blur-xl text-primary shadow-clay-card hover:-translate-y-1 hover:border-primary/40",
       },
       size: {
-        default: "h-10 px-4 py-2",
-        sm: "h-9 rounded-md px-3",
-        lg: "h-12 rounded-lg px-8 text-base",
-        xl: "h-14 rounded-xl px-10 text-lg",
-        icon: "h-10 w-10",
+        default: "h-14 px-6 py-2 text-sm",
+        sm: "h-11 px-4 text-sm",
+        lg: "h-16 px-10 text-base",
+        xl: "h-[4.5rem] px-12 text-lg",
+        icon: "h-11 w-11",
       },
     },
     defaultVariants: {
       variant: "default",
       size: "default",
     },
-  },
+  }
 );
 
 export interface ButtonProps
@@ -44,7 +52,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
     return <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />;
-  },
+  }
 );
 Button.displayName = "Button";
 

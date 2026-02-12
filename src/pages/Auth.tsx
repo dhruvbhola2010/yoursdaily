@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Sparkles, Mail, Lock, ArrowRight, Gift } from "lucide-react";
+import { Sparkles, Mail, Lock, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { z } from "zod";
+import FloatingBlobs from "@/components/FloatingBlobs";
 
 const emailSchema = z.string().email("Please enter a valid email address");
 const passwordSchema = z.string().min(6, "Password must be at least 6 characters");
@@ -29,7 +29,6 @@ const Auth = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Validate inputs
     try {
       emailSchema.parse(email);
       passwordSchema.parse(password);
@@ -70,43 +69,30 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-background flex items-center justify-center px-4 py-12 relative">
+      <FloatingBlobs />
+
+      <div className="w-full max-w-md relative z-10">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 mb-4">
-            <Sparkles className="w-8 h-8 text-accent" />
-            <span className="font-serif text-3xl font-bold text-foreground">
+          <div className="inline-flex items-center gap-2.5 mb-4">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#A78BFA] to-[#7C3AED] flex items-center justify-center shadow-clay-button">
+              <Sparkles className="w-6 h-6 text-white" />
+            </div>
+            <span className="font-display text-3xl font-black text-foreground">
               Yours Daily
             </span>
           </div>
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground font-medium">
             {isSignUp
               ? "Start your journey of daily inspiration"
               : "Welcome back! Sign in to continue"}
           </p>
         </div>
 
-        {/* Trial Banner */}
-        {isSignUp && (
-          <div className="bg-accent/10 border border-accent/20 rounded-xl p-4 mb-6 flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-accent/20">
-              <Gift className="w-5 h-5 text-accent" />
-            </div>
-            <div>
-              <p className="font-semibold text-foreground text-sm">
-                7-Day Free Trial
-              </p>
-              <p className="text-xs text-muted-foreground">
-                No credit card required. Full access to all features.
-              </p>
-            </div>
-          </div>
-        )}
-
-        <Card className="border-0 shadow-card">
+        <Card>
           <CardHeader className="pb-4">
-            <h2 className="font-serif text-2xl font-bold text-foreground text-center">
+            <h2 className="font-display text-2xl font-black text-foreground text-center">
               {isSignUp ? "Create Your Account" : "Sign In"}
             </h2>
           </CardHeader>
@@ -114,13 +100,13 @@ const Auth = () => {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                  <Input
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                  <input
                     type="email"
                     placeholder="Email address"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="pl-10 h-12"
+                    className="flex w-full border-0 bg-secondary/80 rounded-2xl h-14 px-12 py-4 text-foreground text-base shadow-clay-pressed placeholder:text-muted-foreground focus:bg-white focus:ring-4 focus:ring-primary/20 focus:outline-none transition-all duration-200 font-medium"
                     required
                   />
                 </div>
@@ -128,13 +114,13 @@ const Auth = () => {
 
               <div className="space-y-2">
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                  <Input
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                  <input
                     type="password"
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="pl-10 h-12"
+                    className="flex w-full border-0 bg-secondary/80 rounded-2xl h-14 px-12 py-4 text-foreground text-base shadow-clay-pressed placeholder:text-muted-foreground focus:bg-white focus:ring-4 focus:ring-primary/20 focus:outline-none transition-all duration-200 font-medium"
                     required
                     minLength={6}
                   />
@@ -143,7 +129,7 @@ const Auth = () => {
 
               <Button
                 type="submit"
-                variant="gold"
+                variant="clay"
                 size="lg"
                 className="w-full"
                 disabled={isLoading}
@@ -152,7 +138,7 @@ const Auth = () => {
                   "Please wait..."
                 ) : (
                   <>
-                    {isSignUp ? "Start Free Trial" : "Sign In"}
+                    {isSignUp ? "Create Account" : "Sign In"}
                     <ArrowRight className="w-4 h-4 ml-1" />
                   </>
                 )}
@@ -160,21 +146,21 @@ const Auth = () => {
             </form>
 
             <div className="mt-6 text-center">
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-muted-foreground font-medium">
                 {isSignUp ? "Already have an account?" : "Don't have an account?"}
                 <button
                   type="button"
                   onClick={() => setIsSignUp(!isSignUp)}
-                  className="ml-1 text-accent font-semibold hover:underline"
+                  className="ml-1 text-primary font-bold hover:underline"
                 >
-                  {isSignUp ? "Sign in" : "Start free trial"}
+                  {isSignUp ? "Sign in" : "Create account"}
                 </button>
               </p>
             </div>
           </CardContent>
         </Card>
 
-        <p className="text-center text-xs text-muted-foreground mt-6">
+        <p className="text-center text-xs text-muted-foreground mt-6 font-medium">
           By signing up, you agree to our Terms of Service and Privacy Policy.
         </p>
       </div>
