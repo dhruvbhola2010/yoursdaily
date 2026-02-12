@@ -1,4 +1,4 @@
-import { Check, Lightbulb, BookOpen, Crown, Gift } from "lucide-react";
+import { Check, Crown, Zap } from "lucide-react";
 import { Card, CardContent, CardHeader } from "./ui/card";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
@@ -8,61 +8,45 @@ const pricingPlans = [
   {
     name: "Free",
     price: "$0",
-    description: "Start your daily inspiration journey",
+    description: "Your daily dose of inspiration",
     features: ["Daily quote of the day", "Beautiful reading experience", "Works on all devices"],
-    icon: null,
     popular: false,
-    buttonVariant: "outline" as const,
+    buttonVariant: "clayOutline" as const,
     buttonText: "Get Started",
+    gradient: "",
   },
   {
-    name: "Fun Facts",
-    price: "$1",
-    period: "/month",
-    description: "Unlock fascinating daily facts",
-    features: [
-      "Everything in Free",
-      "Daily fun fact with sources",
-      "Shareable fact cards",
-      "Access to fact archive",
-    ],
-    icon: Lightbulb,
-    popular: false,
-    buttonVariant: "gold" as const,
-    buttonText: "Start Free Trial",
-  },
-  {
-    name: "Word Lover",
-    price: "$1",
-    period: "/month",
-    description: "Expand your vocabulary daily",
-    features: [
-      "Everything in Free",
-      "Daily word with definition",
-      "Pronunciation guide",
-      "Usage examples",
-    ],
-    icon: BookOpen,
-    popular: false,
-    buttonVariant: "gold" as const,
-    buttonText: "Start Free Trial",
-  },
-  {
-    name: "Complete",
+    name: "Monthly",
     price: "$2",
     period: "/month",
     description: "The full Yours Daily experience",
     features: [
       "Daily quote of the day",
-      "Daily fun fact",
+      "Daily fun fact with sources",
       "Daily word with definition",
+      "Access to content archive",
       "Priority support",
-      "Early access to new features",
     ],
-    icon: Crown,
     popular: true,
-    buttonVariant: "navy" as const,
-    buttonText: "Start Free Trial",
+    buttonVariant: "clay" as const,
+    buttonText: "Subscribe Now",
+    gradient: "bg-gradient-to-br from-[#A78BFA]/5 to-[#7C3AED]/5",
+  },
+  {
+    name: "Annual",
+    price: "$20",
+    period: "/year",
+    description: "Best value — save $4/year",
+    features: [
+      "Everything in Monthly",
+      "2 months free",
+      "Early access to new features",
+      "Exclusive content drops",
+    ],
+    popular: false,
+    buttonVariant: "clayPink" as const,
+    buttonText: "Subscribe & Save",
+    gradient: "",
   },
 ];
 
@@ -79,61 +63,63 @@ export const PricingSection = () => {
 
   return (
     <section className="py-20 px-4">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-12 animate-fade-in">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/20 mb-6">
-            <Gift className="w-4 h-4 text-accent" />
-            <span className="text-sm font-semibold text-accent">
-              7-Day Free Trial • No Credit Card Required
+      <div className="max-w-5xl mx-auto">
+        <div className="text-center mb-14 animate-fade-in">
+          <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/70 backdrop-blur-xl shadow-clay-card mb-8">
+            <Zap className="w-4 h-4 text-primary" />
+            <span className="text-sm font-bold text-primary">
+              Simple, Transparent Pricing
             </span>
           </div>
-          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-foreground mb-4">
-            Choose Your Journey
+          <h2 className="font-display text-4xl sm:text-5xl font-black text-foreground mb-4 tracking-tight">
+            Choose Your Plan
           </h2>
-          <p className="text-lg text-muted-foreground max-w-xl mx-auto">
-            Start free, upgrade when you're ready. Cancel anytime.
+          <p className="text-lg text-muted-foreground max-w-xl mx-auto font-medium leading-relaxed">
+            Start free with daily quotes. Upgrade for the complete experience.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
           {pricingPlans.map((plan, index) => (
             <Card
               key={plan.name}
-              className={`relative border-0 shadow-card card-hover overflow-hidden animate-slide-up ${
-                plan.popular ? "ring-2 ring-accent" : ""
-              }`}
+              className={`relative hover:-translate-y-2 animate-slide-up ${
+                plan.popular ? "ring-4 ring-primary/20 md:scale-105" : ""
+              } ${plan.gradient}`}
               style={{ animationDelay: `${index * 100}ms` }}
             >
               {plan.popular && (
-                <div className="absolute top-0 left-0 right-0 bg-accent text-accent-foreground text-xs font-semibold py-1.5 text-center">
-                  MOST POPULAR
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-10">
+                  <div className="flex items-center gap-1.5 px-5 py-2 rounded-full bg-gradient-to-r from-[#A78BFA] to-[#7C3AED] text-white text-xs font-bold uppercase tracking-wider shadow-clay-button">
+                    <Crown className="w-3.5 h-3.5" />
+                    Most Popular
+                  </div>
                 </div>
               )}
-              
-              <CardHeader className={`pb-4 ${plan.popular ? "pt-10" : "pt-6"}`}>
-                <div className="flex items-center gap-2 mb-2">
-                  {plan.icon && <plan.icon className="w-5 h-5 text-accent" />}
-                  <span className="font-semibold text-foreground">{plan.name}</span>
-                </div>
-                <div className="flex items-baseline gap-1">
-                  <span className="font-serif text-4xl font-bold text-foreground">
+
+              <CardHeader className={`pb-4 ${plan.popular ? "pt-10" : ""}`}>
+                <span className="font-display font-extrabold text-foreground text-lg">{plan.name}</span>
+                <div className="flex items-baseline gap-1 mt-2">
+                  <span className="font-display text-5xl font-black text-foreground">
                     {plan.price}
                   </span>
                   {plan.period && (
-                    <span className="text-muted-foreground">{plan.period}</span>
+                    <span className="text-muted-foreground font-medium">{plan.period}</span>
                   )}
                 </div>
-                <p className="text-sm text-muted-foreground mt-2">
+                <p className="text-sm text-muted-foreground mt-2 font-medium">
                   {plan.description}
                 </p>
               </CardHeader>
 
               <CardContent className="pt-0">
-                <ul className="space-y-3 mb-6">
+                <ul className="space-y-3 mb-8">
                   {plan.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-2 text-sm">
-                      <Check className="w-4 h-4 text-accent mt-0.5 flex-shrink-0" />
-                      <span className="text-muted-foreground">{feature}</span>
+                    <li key={feature} className="flex items-start gap-3 text-sm">
+                      <div className="w-5 h-5 rounded-full bg-[#10B981]/15 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <Check className="w-3 h-3 text-[#10B981]" />
+                      </div>
+                      <span className="text-muted-foreground font-medium">{feature}</span>
                     </li>
                   ))}
                 </ul>

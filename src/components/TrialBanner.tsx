@@ -6,32 +6,33 @@ export const TrialBanner = () => {
 
   if (!isInTrial) return null;
 
-  // Check if user has any active subscriptions
   const hasSubscription =
     profile?.has_fun_facts_subscription || profile?.has_word_subscription;
 
   if (hasSubscription) return null;
 
   return (
-    <div className="bg-gradient-to-r from-accent/20 to-accent/10 border border-accent/30 rounded-xl p-4 mb-6 flex items-center justify-between gap-4 animate-fade-in">
-      <div className="flex items-center gap-3">
-        <div className="p-2 rounded-lg bg-accent/20">
-          <Crown className="w-5 h-5 text-accent" />
+    <div className="clay-card mb-6 animate-fade-in !p-4 sm:!p-5">
+      <div className="relative z-10 flex items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center shadow-clay-button">
+            <Crown className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <p className="font-display font-bold text-foreground text-sm">
+              Free Trial Active
+            </p>
+            <p className="text-xs text-muted-foreground font-medium">
+              Enjoying full access to all premium features
+            </p>
+          </div>
         </div>
-        <div>
-          <p className="font-semibold text-foreground text-sm">
-            Free Trial Active
-          </p>
-          <p className="text-xs text-muted-foreground">
-            Enjoying full access to all premium features
-          </p>
+        <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 backdrop-blur">
+          <Clock className="w-4 h-4 text-primary" />
+          <span className="text-sm font-bold text-primary">
+            {trialDaysRemaining} day{trialDaysRemaining !== 1 ? "s" : ""} left
+          </span>
         </div>
-      </div>
-      <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent/20">
-        <Clock className="w-4 h-4 text-accent" />
-        <span className="text-sm font-semibold text-accent">
-          {trialDaysRemaining} day{trialDaysRemaining !== 1 ? "s" : ""} left
-        </span>
       </div>
     </div>
   );
