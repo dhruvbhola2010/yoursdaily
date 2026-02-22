@@ -8,7 +8,7 @@ import { LockedCard } from "@/components/LockedCard";
 import { TrialBanner } from "@/components/TrialBanner";
 import { PricingSection } from "@/components/PricingSection";
 import { Footer } from "@/components/Footer";
-import { ThemeSelector, type ContentTheme } from "@/components/ThemeSelector";
+import { type ContentTheme } from "@/components/ThemeSelector";
 import FloatingBlobs from "@/components/FloatingBlobs";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -24,14 +24,12 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background relative">
       <FloatingBlobs />
-      <Header />
+      <Header selectedTheme={selectedTheme} onThemeChange={setSelectedTheme} />
 
       <main className="max-w-4xl mx-auto px-4 pb-12">
         <Hero />
 
         {user && <TrialBanner />}
-
-        <ThemeSelector selected={selectedTheme} onChange={setSelectedTheme} />
 
         <div className="space-y-6 animate-slide-up" style={{ animationDelay: "200ms" }}>
           <QuoteCard theme={selectedTheme} />

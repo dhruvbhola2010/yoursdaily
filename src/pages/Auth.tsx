@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Sparkles, Mail, Lock, ArrowRight } from "lucide-react";
+import { Sparkles, Mail, Lock, ArrowRight, UserCircle, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { z } from "zod";
 import FloatingBlobs from "@/components/FloatingBlobs";
@@ -15,14 +16,14 @@ const Auth = () => {
   const [isSignUp, setIsSignUp] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [displayName, setDisplayName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { signUp, signIn, user } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user) {
-      navigate("/");
-    }
+    if (user) navigate("/");
   }, [user, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -43,22 +44,28 @@ const Auth = () => {
     if (isSignUp) {
       const { error } = await signUp(email, password);
       if (error) {
-        if (error.message.includes("already registered")) {
-          toast.error("This email is already registered. Please sign in instead.");
-        } else {
-          toast.error(error.message);
-        }
+        toast.error(error.message.includes("already registered")
+          ? "This email is already registered. Please sign in instead."
+          : error.message);
       } else {
+        // Update profile with name/phone after signup
+        if (displayName || phoneNumber) {
+          const { data: { user: newUser } } = await supabase.auth.getUser();
+          if (newUser) {
+            await supabase.from("profiles").update({
+              display_name: displayName || null,
+              phone_number: phoneNumber || null,
+            }).eq("user_id", newUser.id);
+          }
+        }
         toast.success("Check your email to confirm your account!");
       }
     } else {
       const { error } = await signIn(email, password);
       if (error) {
-        if (error.message.includes("Invalid login credentials")) {
-          toast.error("Invalid email or password. Please try again.");
-        } else {
-          toast.error(error.message);
-        }
+        toast.error(error.message.includes("Invalid login credentials")
+          ? "Invalid email or password. Please try again."
+          : error.message);
       } else {
         toast.success("Welcome back!");
         navigate("/");
@@ -68,6 +75,8 @@ const Auth = () => {
     setIsLoading(false);
   };
 
+  const inputClass = "flex w-full border-0 bg-secondary/80 rounded-[20px] h-14 px-12 py-4 text-foreground text-base shadow-clay-pressed placeholder:text-muted-foreground focus:bg-white focus:ring-4 focus:ring-primary/20 focus:outline-none transition-all duration-200 font-medium";
+
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-4 py-12 relative">
       <FloatingBlobs />
@@ -75,22 +84,20 @@ const Auth = () => {
       <div className="w-full max-w-md relative z-10">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2.5 mb-4">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#A78BFA] to-[#7C3AED] flex items-center justify-center shadow-clay-button">
+          <button onClick={() => navigate("/")} className="inline-flex items-center gap-2.5 mb-4 group">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#A78BFA] to-[#7C3AED] flex items-center justify-center shadow-clay-button transition-all duration-300 group-hover:-translate-y-0.5">
               <Sparkles className="w-6 h-6 text-white" />
             </div>
             <span className="font-display text-3xl font-black text-foreground">
               Yours Daily
             </span>
-          </div>
+          </button>
           <p className="text-muted-foreground font-medium">
-            {isSignUp
-              ? "Start your journey of daily inspiration"
-              : "Welcome back! Sign in to continue"}
+            {isSignUp ? "Start your journey of daily inspiration" : "Welcome back! Sign in to continue"}
           </p>
         </div>
 
-        <Card>
+        <Card className="shadow-clay-card">
           <CardHeader className="pb-4">
             <h2 className="font-display text-2xl font-black text-foreground text-center">
               {isSignUp ? "Create Your Account" : "Sign In"}
@@ -98,34 +105,67 @@ const Auth = () => {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <div className="relative">
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                  <input
-                    type="email"
-                    placeholder="Email address"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="flex w-full border-0 bg-secondary/80 rounded-2xl h-14 px-12 py-4 text-foreground text-base shadow-clay-pressed placeholder:text-muted-foreground focus:bg-white focus:ring-4 focus:ring-primary/20 focus:outline-none transition-all duration-200 font-medium"
-                    required
-                  />
-                </div>
+              {/* Email */}
+              <div className="relative">
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                <input
+                  type="email"
+                  placeholder="Email address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className={inputClass}
+                  required
+                />
               </div>
 
-              <div className="space-y-2">
-                <div className="relative">
-                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                  <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="flex w-full border-0 bg-secondary/80 rounded-2xl h-14 px-12 py-4 text-foreground text-base shadow-clay-pressed placeholder:text-muted-foreground focus:bg-white focus:ring-4 focus:ring-primary/20 focus:outline-none transition-all duration-200 font-medium"
-                    required
-                    minLength={6}
-                  />
-                </div>
+              {/* Password */}
+              <div className="relative">
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                <input
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className={inputClass}
+                  required
+                  minLength={6}
+                />
               </div>
+
+              {/* Sign Up Extra Fields */}
+              {isSignUp && (
+                <div className="space-y-4 pt-2">
+                  <div className="flex items-center gap-2 text-xs font-bold text-muted-foreground uppercase tracking-widest">
+                    <div className="h-px flex-1 bg-border" />
+                    Personalize
+                    <div className="h-px flex-1 bg-border" />
+                  </div>
+
+                  <div className="relative">
+                    <UserCircle className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                    <input
+                      type="text"
+                      placeholder="Display name (optional)"
+                      value={displayName}
+                      onChange={(e) => setDisplayName(e.target.value)}
+                      className={inputClass}
+                      maxLength={50}
+                    />
+                  </div>
+
+                  <div className="relative">
+                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                    <input
+                      type="tel"
+                      placeholder="Phone number (optional)"
+                      value={phoneNumber}
+                      onChange={(e) => setPhoneNumber(e.target.value)}
+                      className={inputClass}
+                      maxLength={20}
+                    />
+                  </div>
+                </div>
+              )}
 
               <Button
                 type="submit"
@@ -134,9 +174,7 @@ const Auth = () => {
                 className="w-full"
                 disabled={isLoading}
               >
-                {isLoading ? (
-                  "Please wait..."
-                ) : (
+                {isLoading ? "Please wait..." : (
                   <>
                     {isSignUp ? "Create Account" : "Sign In"}
                     <ArrowRight className="w-4 h-4 ml-1" />
