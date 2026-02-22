@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { QuoteCard } from "@/components/QuoteCard";
@@ -7,11 +8,13 @@ import { LockedCard } from "@/components/LockedCard";
 import { TrialBanner } from "@/components/TrialBanner";
 import { PricingSection } from "@/components/PricingSection";
 import { Footer } from "@/components/Footer";
+import { ThemeSelector, type ContentTheme } from "@/components/ThemeSelector";
 import FloatingBlobs from "@/components/FloatingBlobs";
 import { useAuth } from "@/contexts/AuthContext";
 
 const Index = () => {
   const { user, isInTrial, profile, loading } = useAuth();
+  const [selectedTheme, setSelectedTheme] = useState<ContentTheme>("all");
 
   const canAccessFunFacts =
     user && (isInTrial || profile?.has_fun_facts_subscription);
@@ -28,13 +31,15 @@ const Index = () => {
 
         {user && <TrialBanner />}
 
+        <ThemeSelector selected={selectedTheme} onChange={setSelectedTheme} />
+
         <div className="space-y-6 animate-slide-up" style={{ animationDelay: "200ms" }}>
-          <QuoteCard />
+          <QuoteCard theme={selectedTheme} />
 
           {loading ? (
             <div className="h-48 rounded-[32px] bg-white/50 backdrop-blur-xl animate-pulse shadow-clay-card" />
           ) : canAccessFunFacts ? (
-            <FunFactCard />
+            <FunFactCard theme={selectedTheme} />
           ) : (
             <LockedCard type="funFact" price="$2" />
           )}
@@ -42,7 +47,7 @@ const Index = () => {
           {loading ? (
             <div className="h-48 rounded-[32px] bg-white/50 backdrop-blur-xl animate-pulse shadow-clay-card" />
           ) : canAccessWord ? (
-            <WordCard />
+            <WordCard theme={selectedTheme} />
           ) : (
             <LockedCard type="word" price="$2" />
           )}
