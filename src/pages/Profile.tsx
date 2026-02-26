@@ -1,19 +1,20 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { UserCircle, Phone, Mail, Save, ArrowLeft } from "lucide-react";
+import { UserCircle, Phone, Mail, Save, ArrowLeft, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import FloatingBlobs from "@/components/FloatingBlobs";
-import { Header } from "@/components/Header";
+import { ThemeSelector, type ContentTheme } from "@/components/ThemeSelector";
 
 const Profile = () => {
   const { user, profile, loading, refreshProfile } = useAuth();
   const navigate = useNavigate();
   const [displayName, setDisplayName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [selectedTheme, setSelectedTheme] = useState<ContentTheme>("all");
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -24,6 +25,7 @@ const Profile = () => {
     if (profile) {
       setDisplayName(profile.display_name || "");
       setPhoneNumber(profile.phone_number || "");
+      setSelectedTheme((profile.selected_theme as ContentTheme) || "all");
     }
   }, [profile]);
 
@@ -34,6 +36,7 @@ const Profile = () => {
     const { error } = await supabase.from("profiles").update({
       display_name: displayName || null,
       phone_number: phoneNumber || null,
+      selected_theme: selectedTheme,
     }).eq("user_id", user.id);
 
     if (error) {
@@ -52,21 +55,19 @@ const Profile = () => {
   return (
     <div className="min-h-screen bg-background relative">
       <FloatingBlobs />
-      <Header />
 
-      <main className="max-w-lg mx-auto px-4 pb-12 relative z-10">
+      <main className="max-w-lg mx-auto px-4 py-8 pb-12 relative z-10">
         <Button variant="ghost" size="sm" onClick={() => navigate("/")} className="mb-6">
           <ArrowLeft className="w-4 h-4 mr-1" />
           Back
         </Button>
 
-        <Card className="shadow-clay-card">
+        <Card className="shadow-clay-card mb-6">
           <CardHeader>
             <h1 className="font-display text-2xl font-black text-foreground">Your Profile</h1>
             <p className="text-sm text-muted-foreground font-medium">Personalize your account</p>
           </CardHeader>
           <CardContent className="space-y-4">
-            {/* Email (read-only) */}
             <div className="relative opacity-60">
               <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
               <input
@@ -100,13 +101,26 @@ const Profile = () => {
                 maxLength={20}
               />
             </div>
-
-            <Button variant="clay" className="w-full" onClick={handleSave} disabled={saving}>
-              <Save className="w-4 h-4 mr-2" />
-              {saving ? "Saving..." : "Save Changes"}
-            </Button>
           </CardContent>
         </Card>
+
+        <Card className="shadow-clay-card mb-6">
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-primary" />
+              <h2 className="font-display text-xl font-black text-foreground">Choose Your Vibe</h2>
+            </div>
+            <p className="text-sm text-muted-foreground font-medium">Pick a theme for your daily content</p>
+          </CardHeader>
+          <CardContent>
+            <ThemeSelector selected={selectedTheme} onChange={setSelectedTheme} />
+          </CardContent>
+        </Card>
+
+        <Button variant="clay" className="w-full" onClick={handleSave} disabled={saving}>
+          <Save className="w-4 h-4 mr-2" />
+          {saving ? "Saving..." : "Save Changes"}
+        </Button>
       </main>
     </div>
   );
