@@ -1,12 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserCircle, Phone, Mail, Save, ArrowLeft, Sparkles } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import FloatingBlobs from "@/components/FloatingBlobs";
 import { ThemeSelector, type ContentTheme } from "@/components/ThemeSelector";
 
 const Profile = () => {
@@ -43,33 +40,35 @@ const Profile = () => {
       toast.error("Failed to save profile.");
     } else {
       await refreshProfile();
-      toast.success("Profile updated!");
+      toast.success("Profile updated.");
     }
     setSaving(false);
   };
 
   if (loading) return null;
 
-  const inputClass = "flex w-full border-0 bg-secondary/80 rounded-[20px] h-14 px-12 py-4 text-foreground text-base shadow-clay-pressed placeholder:text-muted-foreground focus:bg-white focus:ring-4 focus:ring-primary/20 focus:outline-none transition-all duration-200 font-medium";
+  const inputClass = "w-full bg-transparent border-b border-border/50 py-4 pl-10 pr-4 text-foreground text-sm font-light placeholder:text-muted-foreground/50 focus:border-primary/50 focus:outline-none transition-colors duration-300";
 
   return (
     <div className="min-h-screen bg-background relative">
-      <FloatingBlobs />
+      {/* Subtle ambient glow */}
+      <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-primary/[0.02] blur-[100px] rounded-full" />
+      </div>
 
-      <main className="max-w-lg mx-auto px-4 py-8 pb-12 relative z-10">
-        <Button variant="ghost" size="sm" onClick={() => navigate("/")} className="mb-6">
-          <ArrowLeft className="w-4 h-4 mr-1" />
+      <main className="max-w-md mx-auto px-6 py-12 relative z-10">
+        <button onClick={() => navigate("/")} className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors duration-300 text-sm font-light mb-16">
+          <ArrowLeft className="w-3.5 h-3.5" />
           Back
-        </Button>
+        </button>
 
-        <Card className="shadow-clay-card mb-6">
-          <CardHeader>
-            <h1 className="font-display text-2xl font-black text-foreground">Your Profile</h1>
-            <p className="text-sm text-muted-foreground font-medium">Personalize your account</p>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="relative opacity-60">
-              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+        {/* Profile section */}
+        <div className="mb-16">
+          <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground mb-6 font-sans">Profile</p>
+
+          <div className="space-y-1">
+            <div className="relative opacity-50">
+              <Mail className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/40" />
               <input
                 type="email"
                 value={user?.email || ""}
@@ -79,7 +78,7 @@ const Profile = () => {
             </div>
 
             <div className="relative">
-              <UserCircle className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <UserCircle className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/40" />
               <input
                 type="text"
                 placeholder="Display name"
@@ -91,7 +90,7 @@ const Profile = () => {
             </div>
 
             <div className="relative">
-              <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <Phone className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/40" />
               <input
                 type="tel"
                 placeholder="Phone number"
@@ -101,26 +100,25 @@ const Profile = () => {
                 maxLength={20}
               />
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
-        <Card className="shadow-clay-card mb-6">
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-primary" />
-              <h2 className="font-display text-xl font-black text-foreground">Choose Your Vibe</h2>
-            </div>
-            <p className="text-sm text-muted-foreground font-medium">Pick a theme for your daily content</p>
-          </CardHeader>
-          <CardContent>
-            <ThemeSelector selected={selectedTheme} onChange={setSelectedTheme} />
-          </CardContent>
-        </Card>
+        {/* Theme section */}
+        <div className="mb-16">
+          <div className="editorial-line mb-12" />
+          <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground mb-6 font-sans">Content Theme</p>
+          <ThemeSelector selected={selectedTheme} onChange={setSelectedTheme} />
+        </div>
 
-        <Button variant="clay" className="w-full" onClick={handleSave} disabled={saving}>
-          <Save className="w-4 h-4 mr-2" />
+        {/* Save */}
+        <button
+          onClick={handleSave}
+          disabled={saving}
+          className="w-full py-3.5 text-sm tracking-wide font-sans font-light border border-primary/30 text-primary hover:border-primary/60 hover:bg-primary/5 transition-all duration-300 disabled:opacity-40 flex items-center justify-center gap-2"
+        >
+          <Save className="w-3.5 h-3.5" />
           {saving ? "Saving..." : "Save Changes"}
-        </Button>
+        </button>
       </main>
     </div>
   );

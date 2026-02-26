@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Brain,
   Flame,
@@ -27,48 +26,43 @@ interface ThemeSelectorProps {
   onChange: (theme: ContentTheme) => void;
 }
 
-const themes: { id: ContentTheme; label: string; icon: React.ElementType; color: string }[] = [
-  { id: "all", label: "All", icon: Sparkles, color: "from-purple-400 to-purple-600" },
-  { id: "self-improvement", label: "Self Improvement", icon: Brain, color: "from-violet-400 to-violet-600" },
-  { id: "stoicism", label: "Stoicism", icon: Flame, color: "from-slate-400 to-slate-600" },
-  { id: "education", label: "Education", icon: GraduationCap, color: "from-blue-400 to-blue-600" },
-  { id: "science", label: "Science", icon: FlaskConical, color: "from-emerald-400 to-emerald-600" },
-  { id: "history", label: "History", icon: Landmark, color: "from-amber-400 to-amber-600" },
-  { id: "math", label: "Math", icon: Calculator, color: "from-pink-400 to-pink-600" },
-  { id: "motivation", label: "Motivation", icon: Dumbbell, color: "from-orange-400 to-orange-600" },
-  { id: "study-tips", label: "Study Tips", icon: BookHeart, color: "from-cyan-400 to-cyan-600" },
+const themes: { id: ContentTheme; label: string; icon: React.ElementType }[] = [
+  { id: "all", label: "All", icon: Sparkles },
+  { id: "self-improvement", label: "Self Improvement", icon: Brain },
+  { id: "stoicism", label: "Stoicism", icon: Flame },
+  { id: "education", label: "Education", icon: GraduationCap },
+  { id: "science", label: "Science", icon: FlaskConical },
+  { id: "history", label: "History", icon: Landmark },
+  { id: "math", label: "Math", icon: Calculator },
+  { id: "motivation", label: "Motivation", icon: Dumbbell },
+  { id: "study-tips", label: "Study Tips", icon: BookHeart },
 ];
 
 export const ThemeSelector = ({ selected, onChange }: ThemeSelectorProps) => {
   return (
-    <div className="mb-8 animate-fade-in">
-      <h3 className="font-display text-lg font-bold text-foreground mb-4 tracking-tight">
-        Choose Your Vibe
-      </h3>
-      <div className="flex flex-wrap gap-2.5">
-        {themes.map((theme) => {
-          const Icon = theme.icon;
-          const isSelected = selected === theme.id;
-          return (
-            <button
-              key={theme.id}
-              onClick={() => onChange(theme.id)}
-              className={`
-                inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-semibold
-                transition-all duration-300 hover:-translate-y-0.5
-                ${
-                  isSelected
-                    ? "bg-gradient-to-br text-white shadow-clay-button " + theme.color
-                    : "bg-white/70 backdrop-blur-xl text-muted-foreground shadow-clay-card hover:text-foreground"
-                }
-              `}
-            >
-              <Icon className="w-4 h-4" />
-              {theme.label}
-            </button>
-          );
-        })}
-      </div>
+    <div className="flex flex-wrap gap-2">
+      {themes.map((theme) => {
+        const Icon = theme.icon;
+        const isSelected = selected === theme.id;
+        return (
+          <button
+            key={theme.id}
+            onClick={() => onChange(theme.id)}
+            className={`
+              inline-flex items-center gap-2 px-4 py-2.5 text-xs tracking-wide font-sans font-light
+              transition-all duration-300 border
+              ${
+                isSelected
+                  ? "border-primary/40 text-primary bg-primary/5"
+                  : "border-border/50 text-muted-foreground hover:border-foreground/30 hover:text-foreground"
+              }
+            `}
+          >
+            <Icon className="w-3 h-3" />
+            {theme.label}
+          </button>
+        );
+      })}
     </div>
   );
 };
