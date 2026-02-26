@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      fun_facts: {
+        Row: {
+          created_at: string
+          fact: string
+          id: string
+          source: string
+          theme: string
+        }
+        Insert: {
+          created_at?: string
+          fact: string
+          id?: string
+          source: string
+          theme?: string
+        }
+        Update: {
+          created_at?: string
+          fact?: string
+          id?: string
+          source?: string
+          theme?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -56,6 +80,30 @@ export type Database = {
         }
         Relationships: []
       }
+      quotes: {
+        Row: {
+          author: string
+          created_at: string
+          id: string
+          text: string
+          theme: string
+        }
+        Insert: {
+          author: string
+          created_at?: string
+          id?: string
+          text: string
+          theme?: string
+        }
+        Update: {
+          author?: string
+          created_at?: string
+          id?: string
+          text?: string
+          theme?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
@@ -71,6 +119,39 @@ export type Database = {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
+        }
+        Relationships: []
+      }
+      words: {
+        Row: {
+          created_at: string
+          definition: string
+          example: string
+          id: string
+          part_of_speech: string
+          pronunciation: string
+          theme: string
+          word: string
+        }
+        Insert: {
+          created_at?: string
+          definition: string
+          example: string
+          id?: string
+          part_of_speech: string
+          pronunciation: string
+          theme?: string
+          word: string
+        }
+        Update: {
+          created_at?: string
+          definition?: string
+          example?: string
+          id?: string
+          part_of_speech?: string
+          pronunciation?: string
+          theme?: string
+          word?: string
         }
         Relationships: []
       }
