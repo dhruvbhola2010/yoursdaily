@@ -4,35 +4,35 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap font-bold tracking-wide ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/30 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 active:scale-[0.92]",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap font-sans font-light tracking-wide ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/30 disabled:pointer-events-none disabled:opacity-40 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
         default:
-          "rounded-[20px] bg-gradient-to-br from-[#A78BFA] to-[#7C3AED] text-white shadow-clay-button hover:-translate-y-1 active:shadow-clay-pressed",
+          "border border-primary/30 text-primary hover:border-primary/60 hover:bg-primary/5",
         destructive:
-          "rounded-[20px] bg-destructive text-destructive-foreground shadow-clay-button hover:-translate-y-1",
+          "border border-destructive/30 text-destructive hover:border-destructive/60 hover:bg-destructive/5",
         outline:
-          "rounded-[20px] border-2 border-primary/20 bg-transparent text-primary hover:border-primary hover:bg-primary/5",
+          "border border-border text-muted-foreground hover:border-foreground/30 hover:text-foreground",
         secondary:
-          "rounded-[20px] bg-white text-foreground shadow-clay-button hover:-translate-y-1",
+          "border border-border text-foreground hover:bg-secondary",
         ghost:
-          "rounded-[20px] text-foreground hover:bg-primary/10 hover:text-primary",
+          "text-muted-foreground hover:text-foreground",
         link:
           "text-primary underline-offset-4 hover:underline",
         clay:
-          "rounded-[20px] bg-gradient-to-br from-[#A78BFA] to-[#7C3AED] text-white shadow-clay-button hover:-translate-y-1 hover:shadow-[16px_16px_32px_rgba(139,92,246,0.4),-10px_-10px_20px_rgba(255,255,255,0.5)] active:shadow-clay-pressed",
+          "border border-primary/30 text-primary hover:border-primary/60 hover:bg-primary/5",
         clayPink:
-          "rounded-[20px] bg-gradient-to-br from-[#F472B6] to-[#DB2777] text-white shadow-clay-button hover:-translate-y-1 active:shadow-clay-pressed",
+          "border border-primary/30 text-primary hover:border-primary/60 hover:bg-primary/5",
         clayOutline:
-          "rounded-[20px] border-2 border-primary/20 bg-white/60 backdrop-blur-xl text-primary shadow-clay-card hover:-translate-y-1 hover:border-primary/40",
+          "border border-border text-muted-foreground hover:border-foreground/30 hover:text-foreground",
       },
       size: {
-        default: "h-14 px-6 py-2 text-sm",
-        sm: "h-11 px-4 text-sm",
-        lg: "h-16 px-10 text-base",
-        xl: "h-[4.5rem] px-12 text-lg",
-        icon: "h-11 w-11",
+        default: "h-11 px-6 py-2 text-sm",
+        sm: "h-9 px-4 text-xs",
+        lg: "h-12 px-8 text-sm",
+        xl: "h-14 px-10 text-sm",
+        icon: "h-9 w-9",
       },
     },
     defaultVariants: {

@@ -1,13 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Sparkles, Mail, Lock, ArrowRight, UserCircle, Phone } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Mail, Lock, ArrowRight, UserCircle, Phone } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { z } from "zod";
-import FloatingBlobs from "@/components/FloatingBlobs";
 
 const emailSchema = z.string().email("Please enter a valid email address");
 const passwordSchema = z.string().min(6, "Password must be at least 6 characters");
@@ -48,7 +45,6 @@ const Auth = () => {
           ? "This email is already registered. Please sign in instead."
           : error.message);
       } else {
-        // Update profile with name/phone after signup
         if (displayName || phoneNumber) {
           const { data: { user: newUser } } = await supabase.auth.getUser();
           if (newUser) {
@@ -64,10 +60,10 @@ const Auth = () => {
       const { error } = await signIn(email, password);
       if (error) {
         toast.error(error.message.includes("Invalid login credentials")
-          ? "Invalid email or password. Please try again."
+          ? "Invalid email or password."
           : error.message);
       } else {
-        toast.success("Welcome back!");
+        toast.success("Welcome back.");
         navigate("/");
       }
     }
@@ -75,132 +71,113 @@ const Auth = () => {
     setIsLoading(false);
   };
 
-  const inputClass = "flex w-full border-0 bg-secondary/80 rounded-[20px] h-14 px-12 py-4 text-foreground text-base shadow-clay-pressed placeholder:text-muted-foreground focus:bg-white focus:ring-4 focus:ring-primary/20 focus:outline-none transition-all duration-200 font-medium";
+  const inputClass = "w-full bg-transparent border-b border-border/50 py-4 pl-10 pr-4 text-foreground text-sm font-light placeholder:text-muted-foreground/50 focus:border-primary/50 focus:outline-none transition-colors duration-300";
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4 py-12 relative">
-      <FloatingBlobs />
+    <div className="min-h-screen bg-background flex items-center justify-center px-6 py-12 relative">
+      {/* Subtle ambient glow */}
+      <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-primary/[0.02] blur-[100px] rounded-full" />
+      </div>
 
-      <div className="w-full max-w-md relative z-10">
+      <div className="w-full max-w-sm relative z-10 animate-cinema-reveal" style={{ animationDelay: "0.3s" }}>
         {/* Logo */}
-        <div className="text-center mb-8">
-          <button onClick={() => navigate("/")} className="inline-flex items-center gap-2.5 mb-4 group">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#A78BFA] to-[#7C3AED] flex items-center justify-center shadow-clay-button transition-all duration-300 group-hover:-translate-y-0.5">
-              <Sparkles className="w-6 h-6 text-white" />
-            </div>
-            <span className="font-display text-3xl font-black text-foreground">
+        <div className="text-center mb-16">
+          <button onClick={() => navigate("/")} className="inline-block mb-6">
+            <span className="text-xs tracking-[0.4em] uppercase text-muted-foreground font-sans font-medium">
               Yours Daily
             </span>
           </button>
-          <p className="text-muted-foreground font-medium">
-            {isSignUp ? "Start your journey of daily inspiration" : "Welcome back! Sign in to continue"}
-          </p>
+          <h1 className="font-display text-3xl text-foreground font-light">
+            {isSignUp ? "Create Account" : "Welcome Back"}
+          </h1>
         </div>
 
-        <Card className="shadow-clay-card">
-          <CardHeader className="pb-4">
-            <h2 className="font-display text-2xl font-black text-foreground text-center">
-              {isSignUp ? "Create Your Account" : "Sign In"}
-            </h2>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Email */}
+        <form onSubmit={handleSubmit} className="space-y-1">
+          {/* Email */}
+          <div className="relative">
+            <Mail className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/40" />
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className={inputClass}
+              required
+            />
+          </div>
+
+          {/* Password */}
+          <div className="relative">
+            <Lock className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/40" />
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className={inputClass}
+              required
+              minLength={6}
+            />
+          </div>
+
+          {/* Sign Up Extra Fields */}
+          {isSignUp && (
+            <>
               <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                <UserCircle className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/40" />
                 <input
-                  type="email"
-                  placeholder="Email address"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  type="text"
+                  placeholder="Name (optional)"
+                  value={displayName}
+                  onChange={(e) => setDisplayName(e.target.value)}
                   className={inputClass}
-                  required
+                  maxLength={50}
                 />
               </div>
 
-              {/* Password */}
               <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                <Phone className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/40" />
                 <input
-                  type="password"
-                  placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  type="tel"
+                  placeholder="Phone (optional)"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
                   className={inputClass}
-                  required
-                  minLength={6}
+                  maxLength={20}
                 />
               </div>
+            </>
+          )}
 
-              {/* Sign Up Extra Fields */}
-              {isSignUp && (
-                <div className="space-y-4 pt-2">
-                  <div className="flex items-center gap-2 text-xs font-bold text-muted-foreground uppercase tracking-widest">
-                    <div className="h-px flex-1 bg-border" />
-                    Personalize
-                    <div className="h-px flex-1 bg-border" />
-                  </div>
-
-                  <div className="relative">
-                    <UserCircle className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                    <input
-                      type="text"
-                      placeholder="Display name (optional)"
-                      value={displayName}
-                      onChange={(e) => setDisplayName(e.target.value)}
-                      className={inputClass}
-                      maxLength={50}
-                    />
-                  </div>
-
-                  <div className="relative">
-                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                    <input
-                      type="tel"
-                      placeholder="Phone number (optional)"
-                      value={phoneNumber}
-                      onChange={(e) => setPhoneNumber(e.target.value)}
-                      className={inputClass}
-                      maxLength={20}
-                    />
-                  </div>
-                </div>
+          <div className="pt-10">
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full py-3.5 text-sm tracking-wide font-sans font-light border border-primary/30 text-primary hover:border-primary/60 hover:bg-primary/5 transition-all duration-300 disabled:opacity-40"
+            >
+              {isLoading ? "Please wait..." : (
+                <span className="flex items-center justify-center gap-2">
+                  {isSignUp ? "Create Account" : "Sign In"}
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </span>
               )}
+            </button>
+          </div>
+        </form>
 
-              <Button
-                type="submit"
-                variant="clay"
-                size="lg"
-                className="w-full"
-                disabled={isLoading}
-              >
-                {isLoading ? "Please wait..." : (
-                  <>
-                    {isSignUp ? "Create Account" : "Sign In"}
-                    <ArrowRight className="w-4 h-4 ml-1" />
-                  </>
-                )}
-              </Button>
-            </form>
-
-            <div className="mt-6 text-center">
-              <p className="text-sm text-muted-foreground font-medium">
-                {isSignUp ? "Already have an account?" : "Don't have an account?"}
-                <button
-                  type="button"
-                  onClick={() => setIsSignUp(!isSignUp)}
-                  className="ml-1 text-primary font-bold hover:underline"
-                >
-                  {isSignUp ? "Sign in" : "Create account"}
-                </button>
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <p className="text-center text-xs text-muted-foreground mt-6 font-medium">
-          By signing up, you agree to our Terms of Service and Privacy Policy.
-        </p>
+        <div className="mt-10 text-center">
+          <p className="text-xs text-muted-foreground/50 font-light">
+            {isSignUp ? "Already have an account?" : "Don't have an account?"}
+            <button
+              type="button"
+              onClick={() => setIsSignUp(!isSignUp)}
+              className="ml-1 text-primary/60 hover:text-primary transition-colors duration-300"
+            >
+              {isSignUp ? "Sign in" : "Create one"}
+            </button>
+          </p>
+        </div>
       </div>
     </div>
   );
