@@ -74,13 +74,8 @@
   @keyframes cinema-reveal {
     0% {
       opacity: 0;
-      filter: blur(12px);
-      transform: translateY(8px);
-    }
-    60% {
-      opacity: 0.6;
-      filter: blur(4px);
-      transform: translateY(3px);
+      filter: blur(8px);
+      transform: translateY(6px);
     }
     100% {
       opacity: 1;
@@ -92,12 +87,8 @@
   @keyframes cinema-reveal-slow {
     0% {
       opacity: 0;
-      filter: blur(16px);
-      transform: translateY(12px);
-    }
-    40% {
-      opacity: 0.3;
-      filter: blur(8px);
+      filter: blur(10px);
+      transform: translateY(8px);
     }
     100% {
       opacity: 1;
@@ -112,12 +103,12 @@
   }
 
   .animate-cinema-reveal {
-    animation: cinema-reveal 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation: cinema-reveal 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
     opacity: 0;
   }
 
   .animate-cinema-reveal-slow {
-    animation: cinema-reveal-slow 3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation: cinema-reveal-slow 1.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
     opacity: 0;
   }
 

@@ -80,7 +80,7 @@ const Auth = () => {
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-primary/[0.02] blur-[100px] rounded-full" />
       </div>
 
-      <div className="w-full max-w-sm relative z-10 animate-cinema-reveal" style={{ animationDelay: "0.3s" }}>
+      <div className="w-full max-w-sm relative z-10">
         {/* Logo */}
         <div className="text-center mb-16">
           <button onClick={() => navigate("/")} className="inline-block mb-6">
