@@ -19,7 +19,7 @@ const plans = [
     name: "Annual",
     price: "$20",
     period: "/yr",
-    features: ["Everything in Monthly", "2 months free", "Early access"],
+    features: ["Everything in Monthly", "Best value", "Early access"],
   },
 ];
 
