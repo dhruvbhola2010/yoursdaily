@@ -23,6 +23,7 @@ export type Database = {
           has_word_subscription: boolean
           id: string
           phone_number: string | null
+          selected_theme: string
           trial_started_at: string
           updated_at: string
           user_id: string
@@ -35,6 +36,7 @@ export type Database = {
           has_word_subscription?: boolean
           id?: string
           phone_number?: string | null
+          selected_theme?: string
           trial_started_at?: string
           updated_at?: string
           user_id: string
@@ -47,6 +49,7 @@ export type Database = {
           has_word_subscription?: boolean
           id?: string
           phone_number?: string | null
+          selected_theme?: string
           trial_started_at?: string
           updated_at?: string
           user_id?: string

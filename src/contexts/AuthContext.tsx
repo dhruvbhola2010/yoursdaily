@@ -11,6 +11,7 @@ interface Profile {
   trial_started_at: string;
   has_fun_facts_subscription: boolean;
   has_word_subscription: boolean;
+  selected_theme: string;
 }
 
 interface AuthContextType {

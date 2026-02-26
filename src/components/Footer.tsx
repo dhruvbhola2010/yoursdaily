@@ -18,18 +18,6 @@ export const Footer = () => {
             <p className="text-sm text-muted-foreground flex items-center gap-1 font-medium">
               Made with <Heart className="w-4 h-4 text-accent fill-accent" /> for curious minds
             </p>
-
-            <div className="flex items-center gap-6">
-              <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors font-medium">
-                Privacy
-              </a>
-              <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors font-medium">
-                Terms
-              </a>
-              <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors font-medium">
-                Contact
-              </a>
-            </div>
           </div>
         </div>
       </div>
