@@ -23,13 +23,13 @@ export const QuoteCard = ({ theme = "all" }: QuoteCardProps) => {
     <div>
       <blockquote
         className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-foreground leading-[1.2] font-light italic animate-cinema-reveal-slow"
-        style={{ animationDelay: "1s" }}
+        style={{ animationDelay: "0.5s" }}
       >
         &ldquo;{quote.text}&rdquo;
       </blockquote>
       <p
         className="mt-10 text-sm tracking-[0.2em] uppercase text-muted-foreground font-sans font-light animate-cinema-reveal"
-        style={{ animationDelay: "2.5s" }}
+        style={{ animationDelay: "1.5s" }}
       >
         — {quote.author}
       </p>

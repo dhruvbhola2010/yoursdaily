@@ -123,7 +123,7 @@ const Index = () => {
         {/* Date */}
         <p
           className="text-xs tracking-[0.4em] uppercase text-muted-foreground mb-16 animate-cinema-reveal"
-          style={{ animationDelay: "0.5s" }}
+          style={{ animationDelay: "0.2s" }}
         >
           {today}
         </p>
@@ -134,7 +134,7 @@ const Index = () => {
         </div>
 
         {/* Scroll indicator */}
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 animate-cinema-reveal" style={{ animationDelay: "3s" }}>
+        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 animate-cinema-reveal" style={{ animationDelay: "2s" }}>
           <div className="w-px h-12 bg-gradient-to-b from-transparent to-muted-foreground/30" />
         </div>
       </section>
