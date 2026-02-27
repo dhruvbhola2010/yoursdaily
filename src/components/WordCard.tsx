@@ -1,11 +1,7 @@
 import { useDailyWord } from "@/hooks/useDailyContent";
 
-interface WordCardProps {
-  theme?: string;
-}
-
-export const WordCard = ({ theme = "all" }: WordCardProps) => {
-  const { data: word, isLoading } = useDailyWord(theme);
+export const WordCard = () => {
+  const { data: word, isLoading } = useDailyWord("all");
 
   if (isLoading) {
     return (

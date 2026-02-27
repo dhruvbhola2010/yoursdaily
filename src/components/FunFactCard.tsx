@@ -1,11 +1,7 @@
 import { useDailyFunFact } from "@/hooks/useDailyContent";
 
-interface FunFactCardProps {
-  theme?: string;
-}
-
-export const FunFactCard = ({ theme = "all" }: FunFactCardProps) => {
-  const { data: funFact, isLoading } = useDailyFunFact(theme);
+export const FunFactCard = () => {
+  const { data: funFact, isLoading } = useDailyFunFact("all");
 
   if (isLoading) {
     return (
