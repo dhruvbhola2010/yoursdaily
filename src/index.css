@@ -74,12 +74,10 @@
   @keyframes cinema-reveal {
     0% {
       opacity: 0;
-      filter: blur(8px);
       transform: translateY(6px);
     }
     100% {
       opacity: 1;
-      filter: blur(0);
       transform: translateY(0);
     }
   }
@@ -87,13 +85,39 @@
   @keyframes cinema-reveal-slow {
     0% {
       opacity: 0;
-      filter: blur(10px);
       transform: translateY(8px);
     }
     100% {
       opacity: 1;
-      filter: blur(0);
       transform: translateY(0);
+    }
+  }
+
+  @media (min-width: 768px) {
+    @keyframes cinema-reveal {
+      0% {
+        opacity: 0;
+        filter: blur(8px);
+        transform: translateY(6px);
+      }
+      100% {
+        opacity: 1;
+        filter: blur(0);
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes cinema-reveal-slow {
+      0% {
+        opacity: 0;
+        filter: blur(10px);
+        transform: translateY(8px);
+      }
+      100% {
+        opacity: 1;
+        filter: blur(0);
+        transform: translateY(0);
+      }
     }
   }
 
@@ -103,13 +127,22 @@
   }
 
   .animate-cinema-reveal {
-    animation: cinema-reveal 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation: cinema-reveal 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
     opacity: 0;
   }
 
   .animate-cinema-reveal-slow {
-    animation: cinema-reveal-slow 1.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation: cinema-reveal-slow 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
     opacity: 0;
+  }
+
+  @media (min-width: 768px) {
+    .animate-cinema-reveal {
+      animation: cinema-reveal 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+    .animate-cinema-reveal-slow {
+      animation: cinema-reveal-slow 1.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
   }
 
   .animate-subtle-glow {
