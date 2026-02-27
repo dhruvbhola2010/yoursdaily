@@ -1,7 +1,9 @@
 import { useDailyWord } from "@/hooks/useDailyContent";
+import { useTheme } from "@/contexts/ThemeContext";
 
 export const WordCard = () => {
-  const { data: word, isLoading } = useDailyWord("all");
+  const { theme } = useTheme();
+  const { data: word, isLoading } = useDailyWord(theme);
 
   if (isLoading) {
     return (
@@ -19,23 +21,15 @@ export const WordCard = () => {
   return (
     <div>
       <div className="editorial-line mb-12" />
-      <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground mb-8 font-sans">
-        Word of the Day
-      </p>
-      <h3 className="font-display text-4xl sm:text-5xl md:text-6xl text-foreground mb-3 font-light italic">
-        {word.word}
-      </h3>
+      <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground mb-8 font-sans">Word of the Day</p>
+      <h3 className="font-display text-4xl sm:text-5xl md:text-6xl text-foreground mb-3 font-light italic">{word.word}</h3>
       <div className="flex items-center gap-3 text-muted-foreground text-sm font-sans font-light mb-8">
         <span>{word.pronunciation}</span>
         <span className="text-border">·</span>
         <span className="italic">{word.part_of_speech}</span>
       </div>
-      <p className="text-lg sm:text-xl text-foreground/80 font-light leading-relaxed mb-6">
-        {word.definition}
-      </p>
-      <p className="text-muted-foreground/60 italic font-light text-sm">
-        &ldquo;{word.example}&rdquo;
-      </p>
+      <p className="text-lg sm:text-xl text-foreground/80 font-light leading-relaxed mb-6">{word.definition}</p>
+      <p className="text-muted-foreground/60 italic font-light text-sm">&ldquo;{word.example}&rdquo;</p>
     </div>
   );
 };
