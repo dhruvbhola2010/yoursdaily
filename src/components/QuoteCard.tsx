@@ -1,11 +1,7 @@
 import { useDailyQuote } from "@/hooks/useDailyContent";
 
-interface QuoteCardProps {
-  theme?: string;
-}
-
-export const QuoteCard = ({ theme = "all" }: QuoteCardProps) => {
-  const { data: quote, isLoading } = useDailyQuote(theme);
+export const QuoteCard = () => {
+  const { data: quote, isLoading } = useDailyQuote("all");
 
   if (isLoading) {
     return (
