@@ -19,7 +19,8 @@ export function useDailyQuote(theme: string) {
       if (!data || data.length === 0) return null;
       return data[getDayOfYear() % data.length];
     },
-    staleTime: 1000 * 60 * 60, // 1 hour
+    staleTime: 1000 * 60 * 60,
+    placeholderData: (prev) => prev,
   });
 }
 
@@ -36,6 +37,7 @@ export function useDailyFunFact(theme: string) {
       return data[getDayOfYear() % data.length];
     },
     staleTime: 1000 * 60 * 60,
+    placeholderData: (prev) => prev,
   });
 }
 
@@ -52,5 +54,6 @@ export function useDailyWord(theme: string) {
       return data[getDayOfYear() % data.length];
     },
     staleTime: 1000 * 60 * 60,
+    placeholderData: (prev) => prev,
   });
 }
