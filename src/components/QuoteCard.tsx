@@ -1,7 +1,9 @@
 import { useDailyQuote } from "@/hooks/useDailyContent";
+import { useTheme } from "@/contexts/ThemeContext";
 
 export const QuoteCard = () => {
-  const { data: quote, isLoading } = useDailyQuote("all");
+  const { theme } = useTheme();
+  const { data: quote, isLoading } = useDailyQuote(theme);
 
   if (isLoading) {
     return (

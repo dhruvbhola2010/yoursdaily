@@ -1,7 +1,9 @@
 import { useDailyFunFact } from "@/hooks/useDailyContent";
+import { useTheme } from "@/contexts/ThemeContext";
 
 export const FunFactCard = () => {
-  const { data: funFact, isLoading } = useDailyFunFact("all");
+  const { theme } = useTheme();
+  const { data: funFact, isLoading } = useDailyFunFact(theme);
 
   if (isLoading) {
     return (
@@ -19,15 +21,9 @@ export const FunFactCard = () => {
   return (
     <div>
       <div className="editorial-line mb-12" />
-      <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground mb-8 font-sans">
-        Fact of the Day
-      </p>
-      <p className="font-display text-2xl sm:text-3xl md:text-4xl text-foreground leading-relaxed font-light">
-        {funFact.fact}
-      </p>
-      <p className="mt-8 text-xs text-muted-foreground/60 font-sans tracking-wide">
-        {funFact.source}
-      </p>
+      <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground mb-8 font-sans">Fact of the Day</p>
+      <p className="font-display text-2xl sm:text-3xl md:text-4xl text-foreground leading-relaxed font-light">{funFact.fact}</p>
+      <p className="mt-8 text-xs text-muted-foreground/60 font-sans tracking-wide">{funFact.source}</p>
     </div>
   );
 };
